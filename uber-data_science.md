@@ -341,7 +341,7 @@ uber.sample <- uber.train <- uber_sample[-valid_sample,] #32000 #64% for final t
 
 #further cleaning the data, we remove missing values as well as "last_trip-date" from our consideration for the reason that our derived varibale "active" which is also the target variable was produced from last_trip-date variable and therefore would result in inefficient and biased result.
 
-# this was again considered after building the model with the "last_trip-date" vraibale in to it, which for usual reasons made model bias and heavly inefficient.
+# this was again considered after building the model with the "last_trip-date" variable in to it, which for usual reasons made model bias and heavly inefficient.
 
 
 train.final <- uber.sample[complete.cases(uber.sample), ]
@@ -568,7 +568,6 @@ grid()
   `avg_rating_of_driver` | 6 
   
 ```{r, echo=TRUE, eval=TRUE} 
-ggplot(validate.final, aes(y=(avg_dist),x=avg_rating_by_driver)) + geom_point() +facet_wrap(~active)
 ggplot(validate.final, aes(y=(avg_dist),x=trips_in_first_30_days)) + geom_point() +facet_wrap(~active)
 ggplot(validate.final, aes(y=(avg_dist),x=avg_rating_by_driver)) + geom_point() +facet_wrap(~active)
 ggplot(validate.final, aes(x=active, y=log(avg_surge)))  +geom_boxplot() 
@@ -576,7 +575,7 @@ ggplot(validate.final, aes(y=avg_dist, x=avg_rating_by_driver))  +geom_point() +
 ```
 
 
-- Recalling from above table & above graph on importance of variable as well as exploratory analysis, it can be seen that rating by driver if, if around or close to 5, meaning the drier was happy with the customer, would result in higher retention of the users.
+- Recalling from above table & above graph on importance of variable as well as exploratory analysis, it can be seen that rating by driver if, is around or close to 5, meaning the drier was happy with the customer, would result in higher retention of the users.
 
 - Again, We have seen that being from King’s Landing has the highest impact which increases the odds of an active user. In short, King’s Landing is a good market for Uber. In contrast, Astapor is not a good market for Uber.
 
@@ -588,4 +587,4 @@ ggplot(validate.final, aes(y=avg_dist, x=avg_rating_by_driver))  +geom_point() +
 
 - The last insight is that from our model, which was developed and iterated over 50 trees, it was found that root tree belonged to the average distance traveled by  the user over. From the tree, we examined that if it is more than 1.1 or closer and city is "King's landing", uber has a better chance of retaining the customer, if the city is wetterell but for average distance of more than 2.71 and sign_up date is early, there is extremely fair chance of retaining the user with uber and maing travel longer. In addition, if the average rating by driver is more than 4.05 on average, and phone is iphone, and if the use is traveling King's, user retention is positive.
 
-- There are severla otehr inisghts that could be obtained from the model, and visualization, however these are prdominantley the important points for coniseration for uber to improve customer retention and business.
+- There are several other insights that could be obtained from the model, and visualization, however these are prdominantley the important points for coniseration for uber to improve customer retention and business.
