@@ -140,7 +140,8 @@ We would like you to use this data set to help understand what factors are the b
 
 See below for a detailed description of the dataset. Please include any code you wrote for the analysis and delete the data when you have finished with the challenge.
 
-city	city this user signed up in
+library(knitr)
+kable(city	city this user signed up in
 phone	primary device for this user
 signup_date	date of account registration; in the form ‘YYYY-MM-DD’
 last_trip_date	the last time this user completed a trip
@@ -150,7 +151,7 @@ avg_rating_of_driver	the rider’s average rating of their driers over all of th
 surge_pct	the percent of trips taken with surge multiplier > 1
 trips_in_first_30_days	the number of trips this user took in the first 30 days after signing up
 uber_black_user	TRUE if the user took an Uber Black in their first 30 days; FALSE otherwise
-weekday_pct	the percent of the user’s trips occurring during a weekday
+weekday_pct	the percent of the user’s trips occurring during a weekday, format= "markdown)
  
 - Perform any cleaning, exploratory analysis, and/or visualizations to use the provided data for this analysis ( a few sentences/plots describing your approach will suffice). What fraction of the observed users were retained?
 
