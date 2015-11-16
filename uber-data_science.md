@@ -584,7 +584,7 @@ ggplot(validate.final, aes(y=avg_dist, x=avg_rating_by_driver))  +geom_point() +
 
 - Uber should definitely concentrate on the average distance a cutomer is traveling, combined **in** King's landing city as a preferred marketplace(could expand the model understanding and implement it to other places learning from it), that is the driver is happy with the customer as well (had good conversation, social), and if they took trips in starting 30 days.
 
--Another unlikely insight is about phone- Android. Our study suggests that the Android experience is far less compelling than the iPhone, with respect to avg_driver_rating on avg_dist. This could require understanding more in detail.
+- Another unlikely insight is about phone- Android. Our study suggests that the Android experience is far less compelling than the iPhone, with respect to avg_driver_rating on avg_dist. This could require understanding more in detail.
 
 - The last insight is that from our model, which was developed and iterated over 50 trees, it was found that root tree belonged to the average distance traveled by  the user over. From the tree, we examined that if it is more than 1.1 or closer and city is "King's landing", uber has a better chance of retaining the customer, if the city is wetterell but for average distance of more than 2.71 and sign_up date is early, there is extremely fair chance of retaining the user with uber and maing travel longer. In addition, if the average rating by driver is more than 4.05 on average, and phone is iphone, and if the use is traveling King's, user retention is positive.
 
