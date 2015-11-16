@@ -263,7 +263,7 @@ mosaicplot(ds[ord,], main="Mosaic of city (sample) by active", color=colorspace:
 
 
 
-#we would like to remove "avg_surge" or "surge_pct", since it is clear they are correlated and could effect PCA process in determining the variables for the components. We would remove "surge_pct" from further consideration the model, and would go ahead and design it again (PCA as well as prediction models were validated/tested with these correlated variables as well, before considering them to remove from analysis.) 
+#we would like to remove "avg_surge" or "surge_pct", since it is clear they are correlated and could effect PCA process in determining the variables for the components. We would remove "surge_pct" from further consideration the model, and would go ahead and design it again (PCA as well as prediction models were validated/tested with these correlated variables as well, before considering them to remove from analysis.). the choice is random, and is, in addition, also based on the variable importance where both the variables dominated and referred it would ba a good practice to remove one of them.
 
 numeric <- uber.final[c("trips_in_first_30_days", "avg_rating_of_driver", "avg_surge",
      "weekday_pct", "avg_dist", "avg_rating_by_driver")]
