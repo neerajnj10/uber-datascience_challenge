@@ -105,9 +105,15 @@ P :=   SELECT
 
 > A product manager on the Growth Team has proposed a new feature. Instead of getting a free ride for every successful invite, users will get 1 Surge Protector, which exempts them from Surge pricing on their next surged trip. 
 
+#### What would you choose as the key measure of the success of the feature?
+
 - 1. **Number of "new users" signed up for successful trip with uber** in other words, **number of successful invites per user**, should definitely be the key indicator/measure for the success of the product feature. If the number of new users have increased than prior to the launch of the feature, it should be considered a viable indicator, keeping in mind we are taking into consideration no. of successful trip by this new user to be at least 1.
 
+#### What other metrics would be worth watching in addition to the key indicator?
+
 - 2. Other metrics worth looking in to should be **increased user-retention** that is previous users have maintained trips with uber as they successfully brought new users, **increased number of trips per user** which would also be directly proportional to each new invite they bring,**number of successful invites per user** the previous mentioned metric would probably result to this, **decrease in percentage of surge trip** which is again self explanatory, **decrease in trip cancellation by clients** as they would want to continue to use the feature, **increase in average distance per trip**, this is after each successful invite. These are additional indicators that can be used for consideration of measure of performance of the new feature, with possiblity of several other metrics .
+
+#### Describe an experiment design that you could use to confirm the hypothesis that your chosen key measure is different in the treated group.
 
 - 3. HYPOTHESIS.
 
