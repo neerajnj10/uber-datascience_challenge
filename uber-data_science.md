@@ -554,6 +554,8 @@ grid()
 
 - Frequency of variables actually used:
 
+ variable | frequency
+-----|-------------
   `city`  |    35      
   `weekday_pct` |   25      
   `uber_black_user`         |  23       
