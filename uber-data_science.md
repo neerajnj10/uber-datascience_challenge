@@ -15,7 +15,7 @@ output: html_document
 
 ```
 x :=   SELECT *,
-  	   date_trunc('day', request_at AT TIME ZONE 'PDT') AS day_id
+       date_trunc('day', request_at AT TIME ZONE 'PDT') AS day_id
 	     FROM trips	  
 	     WHERE request_at >= TIMESTAMP WITH TIME ZONE '2013-10-01 10:00:00 PDT' 
 	     AND request_at <= TIMESTAMP WITH TIME ZONE '2013-10-22 17:00:00 PDT'
@@ -229,6 +229,8 @@ numeric <- uber.final[c("trips_in_first_30_days", "avg_rating_of_driver", "avg_s
 categoric <- uber.final[c("city", "signup_date", "last_trip_date", "phone")]
 target <- uber.final["active"]
 
+# average distance traveled by user with uber for "Winterfell" and "King'sLanding" cities are alomost similar.
+ggplot(validate.final, aes(y=(avg_dist),x=city)) + geom_boxplot()
 
 
 #correlation plot
@@ -239,7 +241,7 @@ ord <- order(uber.cor[1,])
 uber.cor <- uber.cor[ord, ord]
 corrplot(uber.cor, mar=c(0,0,1,0))
 
-#as expected the variables are not correlated to each other except for slight correlation between "surge_pct" & "avg_surge"
+#as expected the variables are not correlated to each other except for correlation between "surge_pct" & "avg_surge", we would come back to it later.
 
 
 
@@ -255,6 +257,7 @@ ord <- order(apply(ds, 1, sum), decreasing=TRUE)
 mosaicplot(ds[ord,], main="Mosaic of city (sample) by active", color=colorspace::rainbow_hcl(3)[-1], cex=0.7, xlab="city", ylab="active")
 
 
+
 ## mosaic plot shows that being from King’s Landing has the highest impact, it shows that being from King’s Landing increases the odds of an active user by approximately 1.5. In short, it appears King’s Landing is a good market for Uber. In contrast, Astapor is not a good market for Uber.
 
 
@@ -263,7 +266,7 @@ mosaicplot(ds[ord,], main="Mosaic of city (sample) by active", color=colorspace:
 
 
 
-#we would like to remove "avg_surge" or "surge_pct", since it is clear they are correlated and could effect PCA process in determining the variables for the components. We would remove "surge_pct" from further consideration the model, and would go ahead and design it again (PCA as well as prediction models were validated/tested with these correlated variables as well, before considering them to remove from analysis.). the choice is random, and is, in addition, also based on the variable importance where both the variables dominated and referred it would ba a good practice to remove one of them.
+#we would like to remove "avg_surge" or "surge_pct", since it is clear they are correlated and could effect PCA process in determining the variables for the components. We would remove "surge_pct" from further consideration the model, and would go ahead and design it again (PCA as well as prediction models were validated/tested with these correlated variables as well, before considering them to remove from analysis.). The choice is random, and is, in addition, also based on the variable importance where both the variables dominated and referred it would be a good practice to remove one of them
 
 numeric <- uber.final[c("trips_in_first_30_days", "avg_rating_of_driver", "avg_surge",
      "weekday_pct", "avg_dist", "avg_rating_by_driver")]
@@ -298,6 +301,10 @@ title(main="Principal Components")
 
 
 ```{r,echo=TRUE,eval=TRUE}
+
+# dividing dataset into training, validation and testing dataset.
+
+
 set.seed(1234) 
 nobs <- nrow(uber.final)  
 ## 80% of the sample size
@@ -319,7 +326,7 @@ valid_sample <- sample(seq_len(nrow(uber_sample)), size = valid)
 validate <-uber_sample[valid_sample, ]   #20% of the pre-training dataset 
 
 #final training dataset
-uber.sample <- uber.train <- uber_sample[-valid_sample,] #32000 #64% for final training dataset (805 0f the 80% of the input dataset)
+uber.sample <- uber.train <- uber_sample[-valid_sample,] #32000 #64% for final training dataset (80% 0f the 80% of the input dataset)
 
 ```
 
@@ -333,6 +340,9 @@ uber.sample <- uber.train <- uber_sample[-valid_sample,] #32000 #64% for final t
 
 
 #further cleaning the data, we remove missing values as well as "last_trip-date" from our consideration for the reason that our derived varibale "active" which is also the target variable was produced from last_trip-date variable and therefore would result in inefficient and biased result.
+
+# this was again considered after building the model with the "last_trip-date" vraibale in to it, which for usual reasons made model bias and heavly inefficient.
+
 
 train.final <- uber.sample[complete.cases(uber.sample), ]
 validate.final <- validate[complete.cases(validate), ]
@@ -364,6 +374,9 @@ varplot(u.ada)
 ```
 
 
+- train error noted is 0.23 which is decent for consideration.
+- Variable importance plot acknowledges the importance of each variable in the model, in descending order, therefore, **avg_dist** is very imporrtant variable, while **uber_balck_user** is least, implementing that avg_dist traveled by the user on average is better indicator, here **the best indicator/metric** to determine whether the user will be retained or not, while uber_black_user hols least importance and therefore, it would not affect the decision making.  
+
 
 
 ### Evaluate model performance with validation dataset.
@@ -376,6 +389,7 @@ varplot(u.ada)
 #example to show the almost neglible effect of so-called transformation on our model.
 ggplot(validate.final, aes(y=avg_dist,x=active)) + geom_boxplot()
 ggplot(validate.final, aes(y=log(avg_dist),x=active)) + geom_boxplot()
+
 
 validate.final$avg_dist <- log(validate.final$avg_dist)
 
@@ -442,7 +456,12 @@ print(p)
 
 
 
-> Validation datset was further utilized and was performed against "Decision Tree", "Random Forest", "Adaptive-Boosting(ADA)", "Logistic Regression", "Multivariate Adaptive Regression Splines(MARS)" & Support Vector Machine(SVM) and several times iterated over by removing variables (as described at necessary steps the reason for removl of a particular varibale), PCA and correlation were taken into consideration and dataset was changed over time with the model development. However, in this project, I am only presenting the final overview or description of what the dataset looks-like (final) after alteration. Upon changes and comparion based on confusion matrix/error matrix and ROC etc., **Adaptive-Boosting** was finally selected as the best model with best result produced by it in comparison to other, and therefore, would be implemented on test dataset.
+- here,overall and average error percentage are both approximaltely equal to .23 (23%), which is what we got from training set.
+
+- ROC curve is another brilliant performance indicator for the model, and it shows the AUC value around 0.84 which is highly desirable.
+
+
+> Validation datset was further utilized and was performed against "Decision Tree", "Random Forest", "Adaptive-Boosting(ADA)", "Logistic Regression", "Multivariate Adaptive Regression Splines(MARS)" & Support Vector Machine(SVM) and several times iterated over by removing variables (as described at necessary steps the reason for removl of a particular varibale), PCA and correlation were taken into consideration and dataset was changed over time with the model development. However, in this project, I am only presenting the final overview or description of what the dataset looks-like (final) after alteration. Upon changes and comparion based on confusion matrix/error matrix and ROC etc., **Adaptive-Boosting** was finally selected as the best model with best result produced by it in comparison to other, and therefore, would be implemented on test dataset. For further details on how comparison stood up for each model against each other, and the codes used to generate them, please follow this link.
 
 
 
@@ -520,4 +539,51 @@ grid()
 ```
 
 
-# stochastic boosting models for a binary response AdditiveLogistic Regression
+- Again, here we see the final implementation of our model on test dataset, and to much of our likeness, it produces the desirable result. The overall as well as average error percentage is around 24%, which is only 0.1 more than training dataset, as well the ROC curve shows the AUC value as .83, again closer to the value obtained on validation dataset, which shows our model produced fair result on all the dataset. The choice of stochastic boosting models for a binary response, that is, AdditiveLogistic Regression (adaptive boosting) was appropriate. The otehr models, produced higher error rate/percentage around ranging between 24-30%, hence this is better predictor.
+
+- Precision/recall plot confirms our understanding of the model on train and test dataset, as they areover lapping, and symmetrical to each other. 
+
+
+
+### Key take aways (insights) for uber from this model.
+
+- Variables actually used in model construction:
+ `"avg_dist"` |              `"avg_rating_by_driver"` |  `"avg_rating_of_driver"` |  `"avg_surge"`   |          
+ `"city"` |                  `"phone"`            |      `"signup_date"`            | `"trips_in_first_30_days"` |
+ `"uber_black_user"`    |    `"weekday_pct"`           
+
+- Frequency of variables actually used:
+
+  `city`  |    35      
+  `weekday_pct` |   25      
+  `uber_black_user`         |  23       
+  `phone` | 22  
+  `trips_in_first_30_days` | 18
+  `avg_surge`    | 13
+  `avg_rating_by_driver` |  15          
+  `signup_date`           | 13    
+  `avg_dist`  | 9
+  `avg_rating_of_driver` | 6 
+  
+```{r, echo=TRUE, eval=TRUE} 
+ggplot(validate.final, aes(y=(avg_dist),x=avg_rating_by_driver)) + geom_point() +facet_wrap(~active)
+ggplot(validate.final, aes(y=(avg_dist),x=trips_in_first_30_days)) + geom_point() +facet_wrap(~active)
+ggplot(validate.final, aes(y=(avg_dist),x=avg_rating_by_driver)) + geom_point() +facet_wrap(~active)
+ggplot(validate.final, aes(x=active, y=log(avg_surge)))  +geom_boxplot() 
+ggplot(validate.final, aes(y=avg_dist, x=avg_rating_by_driver))  +geom_point() + facet_wrap(~phone) 
+```
+
+
+- Recalling from above table & above graph on importance of variable as well as exploratory analysis, it can be seen that rating by driver if, if around or close to 5, meaning the drier was happy with the customer, would result in higher retention of the users.
+
+- Again, We have seen that being from King’s Landing has the highest impact which increases the odds of an active user. In short, King’s Landing is a good market for Uber. In contrast, Astapor is not a good market for Uber.
+
+- Higher trips in first 30 days is also a good indicator that user will stay longer, and is happier.
+
+- Uber should definitely concentrate on the average distance a cutomer is traveling, combined **in** King's landing city as a preferred marketplace(could expand the model understanding and implement it to other places learning from it), that is the driver is happy with the customer as well (had good conversation, social), and if they took trips in starting 30 days.
+
+-Another unlikely insight is about phone- Android. Our study suggests that the Android experience is far less compelling than the iPhone, with respect to avg_driver_rating on avg_dist. This could require understanding more in detail.
+
+- The last insight is that from our model, which was developed and iterated over 50 trees, it was found that root tree belonged to the average distance traveled by  the user over. From the tree, we examined that if it is more than 1.1 or closer and city is "King's landing", uber has a better chance of retaining the customer, if the city is wetterell but for average distance of more than 2.71 and sign_up date is early, there is extremely fair chance of retaining the user with uber and maing travel longer. In addition, if the average rating by driver is more than 4.05 on average, and phone is iphone, and if the use is traveling King's, user retention is positive.
+
+- There are severla otehr inisghts that could be obtained from the model, and visualization, however these are prdominantley the important points for coniseration for uber to improve customer retention and business.
