@@ -1,7 +1,7 @@
 ---
 title: "uber_challenge"
 author: "Neeraj"
-date: "Wednesday, November 11, 2015"
+date: "Wednesday, November 15, 2015"
 output: html_document
 ---
 
@@ -140,7 +140,6 @@ library(data.table)
 require(corrplot, quietly=TRUE)
 require(fBasics, quietly=TRUE)
 library(ROCR)
-library(rattle)
 require(ggplot2, quietly=TRUE)
 ```
 
