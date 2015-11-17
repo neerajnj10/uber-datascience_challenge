@@ -371,6 +371,69 @@ u.ada <- ada(active ~ .,
 print(u.ada)
 round(u.ada$model$errs[u.ada$iter,], 2)
 varplot(u.ada)
+
+
+#decision tree
+library(rpart)
+fit = rpart(active~., method="class", data=train.final )
+printcp(fit)
+plotcp(fit)
+summary(fit)
+plot(fit, uniform=TRUE)
+text(fit, use.n=TRUE, all=TRUE, cex=.8)
+#uber_is_cool <- na.exclude(uber_final) #remove na/missing values from analysis by excuding such rows from consideration
+#write.csv(uber.final, file= "~/Data_Science/uber.csv") #optionally 
+
+
+# logistic regression
+
+u.glm <- glm(active ~ .,
+             data=train.final,
+             family=binomial(link="logit"))
+
+# Generate a textual view of the Linear model.
+
+print(summary(u.glm))
+cat(sprintf("Log likelihood: %.3f (%d df)\n",
+            logLik(u.glm)[1],
+            attr(logLik(u.glm), "df")))
+cat(sprintf("Null/Residual deviance difference: %.3f (%d df)\n",
+            u.glm$null.deviance-u.glm$deviance,
+            u.glm$df.null-u.glm$df.residual))
+cat(sprintf("Chi-square p-value: %.8f\n",
+            dchisq(u.glm$null.deviance-u.glm$deviance,
+                   u.glm$df.null-u.glm$df.residual)))
+cat(sprintf("Pseudo R-Square (optimistic): %.8f\n",
+            cor(u.glm$y, u.glm$fitted.values)))
+cat('\n==== ANOVA ====\n\n')
+print(anova(u.glm, test="Chisq"))
+
+
+# support vector machine
+
+require(kernlab, quietly=TRUE)
+
+# Build a Support Vector Machine model.
+
+set.seed(11)
+u.ksvm <- ksvm(as.factor(active) ~ .,
+               data=train.final,
+               kernel="rbfdot",
+               prob.model=TRUE)
+
+# Generate a textual view of the SVM model.
+u.ksvm
+
+
+
+# MARS- Multivariate Adaptive Regression Splines
+library(randomForest)
+library(earth) 
+m.earth <- earth(active~., data=train.final)
+mtype <- "earth"
+model <- m.earth
+model
+
 ```
 
 
@@ -452,6 +515,90 @@ p <- p + geom_line(data=data.frame(), aes(x=c(0,1), y=c(0,1)), colour="grey")
 p <- p + annotate("text", x=0.50, y=0.00, hjust=0, vjust=0, size=5,
                    label=paste("AUC =", round(au, 2)))
 print(p)
+
+
+
+# Generate an Error Matrix for the Decision Tree model.
+
+pr <- predict(fit, newdata=validate.final, type="class")
+
+# Generate the confusion matrix showing counts.
+
+table(validate.final$active, pr,
+      dnn=c("Actual", "Predicted"))
+
+# Calculate the overall error percentage.
+
+overall <- function(x)
+{
+  if (nrow(x) == 2) 
+    cat((x[1,2] + x[2,1]) / sum(x)) 
+  else
+    cat(1 - (x[1,rownames(x)]) / sum(x))
+} 
+overall(table(pr, validate.final$active,  
+              dnn=c("Predicted", "Actual")))
+
+# Calculate the averaged class error percentage.
+
+avgerr <- function(x) 
+  cat(mean(c(x[1,2], x[2,1]) / apply(x, 1, sum))) 
+
+avgerr(table(pr, validate.final$active,  
+             dnn=c("Predicted", "Actual")))
+
+
+# Generate an Error Matrix for the SVM model.
+
+svmpr <- predict(u.ksvm, newdata=validate.final)
+
+# Generate the confusion matrix showing counts.
+
+table(validate.final$active, svmpr,
+      dnn=c("Actual", "Predicted"))
+
+# Calculate the overall error percentage.
+overall(table(svmpr, validate.final$active,  
+              dnn=c("Predicted", "Actual")))
+
+# Calculate the averaged class error percentage.
+avgerr(table(svmpr, validate.final$active,  
+             dnn=c("Predicted", "Actual")))
+
+# Generate an Error Matrix for the Logistic model.
+
+
+lpr <- as.vector(ifelse(predict(u.glm, type="response", newdata=validate.final) > 0.5, "1", "0"))
+
+# Generate the confusion matrix showing counts.
+table(validate.final$active, lpr,
+      dnn=c("Actual", "Predicted"))
+
+# Calculate the overall error percentage.
+
+overall(table(lpr, validate.final$active,  
+              dnn=c("Predicted", "Actual")))
+
+# Calculate the averaged class error percentage.
+avgerr(table(lpr, validate.final$active,  
+             dnn=c("Predicted", "Actual")))
+
+
+# MARS model evaluation
+
+marspr <- predict(model, test.final, type="class")
+# Generate the confusion matrix showing counts.
+table(validate.final$active, marspr,
+      dnn=c("Actual", "Predicted"))
+
+# Calculate the overall error percentage.
+overall(table(marspr, test.final$active,  
+              dnn=c("Predicted", "Actual")))
+
+# Calculate the averaged class error percentage.
+avgerr(table(marspr, test.final$active,  
+             dnn=c("Predicted", "Actual")))
+
 ```
 
 
