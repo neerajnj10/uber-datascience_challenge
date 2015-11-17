@@ -381,8 +381,6 @@ plotcp(fit)
 summary(fit)
 plot(fit, uniform=TRUE)
 text(fit, use.n=TRUE, all=TRUE, cex=.8)
-#uber_is_cool <- na.exclude(uber_final) #remove na/missing values from analysis by excuding such rows from consideration
-#write.csv(uber.final, file= "~/Data_Science/uber.csv") #optionally 
 
 
 # logistic regression
