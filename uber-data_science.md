@@ -607,6 +607,7 @@ Model | Average  | Overall
 `Decision tree` | 0.2688798 | 0.2609154
 `Logistic model` | 0.3104115 | 0.2997591
 `MARS` | 0.2436861 | 0.2353715
+`SVM` | 0.2437124 | 0.2393857
 
 
 
