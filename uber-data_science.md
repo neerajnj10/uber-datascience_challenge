@@ -600,8 +600,9 @@ avgerr(table(marspr, validate.final$active,
 ```
 
 #### error matrix of different models on validation dataset.
+
 Model | Average  | Overall
------|-------------
+-----|-------------|----------
 `ADA` | 0.2319015 | 0.2312556
 `Decision tree` | 0.2688798 | 0.2609154
 `Logistic model` | 0.3104115 | 0.2997591
