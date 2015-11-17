@@ -552,8 +552,8 @@ svmpr <- predict(u.ksvm, newdata=validate.final)
 
 # Generate the confusion matrix showing counts.
 
-table(validate.final$active, svmpr,
-      dnn=c("Actual", "Predicted"))
+table(na.omit(validate.final$active, svmpr,
+      dnn=c("Actual", "Predicted")))
 
 # Calculate the overall error percentage.
 overall(table(svmpr, validate.final$active,  
