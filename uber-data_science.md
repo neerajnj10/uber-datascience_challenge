@@ -584,20 +584,28 @@ avgerr(table(lpr, validate.final$active,
 
 # MARS model evaluation
 
-marspr <- predict(model, test.final, type="class")
+marspr <- predict(m.earth, validate.final, type="class")
 # Generate the confusion matrix showing counts.
 table(validate.final$active, marspr,
       dnn=c("Actual", "Predicted"))
 
 # Calculate the overall error percentage.
-overall(table(marspr, test.final$active,  
+overall(table(marspr, validate.final$active,  
               dnn=c("Predicted", "Actual")))
 
 # Calculate the averaged class error percentage.
-avgerr(table(marspr, test.final$active,  
+avgerr(table(marspr, validate.final$active,  
              dnn=c("Predicted", "Actual")))
 
 ```
+
+#### error matrix of different models on validation dataset.
+Model | Average  | Overall
+-----|-------------
+`ADA` | 0.2319015 | 0.2312556
+`Decision tree` | 0.2688798 | 0.2609154
+`Logistic model` | 0.3104115 | 0.2997591
+`MARS` | 0.2436861 | 0.2353715
 
 
 
