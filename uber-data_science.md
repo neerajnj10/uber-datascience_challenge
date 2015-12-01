@@ -259,7 +259,7 @@ ord <- order(apply(ds, 1, sum), decreasing=TRUE)
 # Plot the data.
 mosaicplot(ds[ord,], main="Mosaic of city (sample) by active", color=colorspace::rainbow_hcl(3)[-1], cex=0.7, xlab="city", ylab="active")
 
-
+![mosaicplot](https://cloud.githubusercontent.com/assets/11197322/11510919/0dd1a04a-9834-11e5-928a-92fb88997cb3.png)
 
 ## mosaic plot shows that being from King’s Landing has the highest impact, it shows that being from King’s Landing increases the odds of an active user by approximately 1.5. In short, it appears King’s Landing is a good market for Uber. In contrast, Astapor is not a good market for Uber.
 
@@ -290,6 +290,8 @@ summary(pc)
 plot(pc, main="")
 title(main="Principal Components Importance")
 axis(1, at=seq(0.7, ncol(pc$rotation)*1.2, 1.2), labels=colnames(pc$rotation), lty=0)
+
+![PCA](https://cloud.githubusercontent.com/assets/11197322/11510923/115b518e-9834-11e5-8a1d-9ea81ce40a44.png)
 
 # Display a plot showing the two most principal components.
 biplot(pc, main="")
