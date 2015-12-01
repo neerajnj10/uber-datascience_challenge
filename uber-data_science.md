@@ -242,7 +242,7 @@ uber.cor <- uber.cor[ord, ord]
 corrplot(uber.cor, mar=c(0,0,1,0))
 
 
-![correlation](https://cloud.githubusercontent.com/assets/11197322/11510910/00a4260e-9834-11e5-9dca-0e84c8f3578f.png?raw=true)
+![correlation](https://cloud.githubusercontent.com/assets/11197322/11510910/00a4260e-9834-11e5-9dca-0e84c8f3578f.png?raw=true "correlation")
 
 #as expected the variables are not correlated to each other except for correlation between "surge_pct" & "avg_surge", we would come back to it later.
 
@@ -259,7 +259,7 @@ ord <- order(apply(ds, 1, sum), decreasing=TRUE)
 # Plot the data.
 mosaicplot(ds[ord,], main="Mosaic of city (sample) by active", color=colorspace::rainbow_hcl(3)[-1], cex=0.7, xlab="city", ylab="active")
 
-![mosaicplot](https://cloud.githubusercontent.com/assets/11197322/11510919/0dd1a04a-9834-11e5-928a-92fb88997cb3.png)
+![mosaicplot](https://cloud.githubusercontent.com/assets/11197322/11510919/0dd1a04a-9834-11e5-928a-92fb88997cb3.png "mosaicplot")
 
 ## mosaic plot shows that being from King’s Landing has the highest impact, it shows that being from King’s Landing increases the odds of an active user by approximately 1.5. In short, it appears King’s Landing is a good market for Uber. In contrast, Astapor is not a good market for Uber.
 
@@ -291,11 +291,13 @@ plot(pc, main="")
 title(main="Principal Components Importance")
 axis(1, at=seq(0.7, ncol(pc$rotation)*1.2, 1.2), labels=colnames(pc$rotation), lty=0)
 
-![PCA](https://cloud.githubusercontent.com/assets/11197322/11510923/115b518e-9834-11e5-8a1d-9ea81ce40a44.png)
+![PCA](https://cloud.githubusercontent.com/assets/11197322/11510923/115b518e-9834-11e5-8a1d-9ea81ce40a44.png "PCA")
 
 # Display a plot showing the two most principal components.
 biplot(pc, main="")
 title(main="Principal Components")
+
+![biplot](https://cloud.githubusercontent.com/assets/11197322/11510916/0928924c-9834-11e5-96f4-c1e644832336.png "biplot"]
 ```
 
 
@@ -377,6 +379,7 @@ print(u.ada)
 round(u.ada$model$errs[u.ada$iter,], 2)
 varplot(u.ada)
 
+![varplot](https://cloud.githubusercontent.com/assets/11197322/11510927/1386fe4a-9834-11e5-8781-0ae1aaedd9a1.png "varplot")
 
 #decision tree
 library(rpart)
