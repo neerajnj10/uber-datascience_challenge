@@ -241,6 +241,9 @@ ord <- order(uber.cor[1,])
 uber.cor <- uber.cor[ord, ord]
 corrplot(uber.cor, mar=c(0,0,1,0))
 
+
+![correlation](https://cloud.githubusercontent.com/assets/11197322/11510910/00a4260e-9834-11e5-9dca-0e84c8f3578f.png?raw=true)
+
 #as expected the variables are not correlated to each other except for correlation between "surge_pct" & "avg_surge", we would come back to it later.
 
 
