@@ -301,7 +301,7 @@ biplot(pc, main="")
 title(main="Principal Components")
 ```
 
-![biplot](https://cloud.githubusercontent.com/assets/11197322/11510916/0928924c-9834-11e5-96f4-c1e644832336.png "biplot"]
+![biplot](https://cloud.githubusercontent.com/assets/11197322/11510916/0928924c-9834-11e5-96f4-c1e644832336.png "biplot")
 
 
 
@@ -382,8 +382,12 @@ u.ada <- ada(active ~ .,
 print(u.ada)
 round(u.ada$model$errs[u.ada$iter,], 2)
 varplot(u.ada)
+```
 
 ![varplot](https://cloud.githubusercontent.com/assets/11197322/11510927/1386fe4a-9834-11e5-8781-0ae1aaedd9a1.png "varplot")
+
+
+```{r}
 
 #decision tree
 library(rpart)
